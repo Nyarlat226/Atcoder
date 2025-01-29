@@ -2,46 +2,39 @@
 using namespace std;
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
 using ll = long long;
+using P = pair<int, int>;
 
 int main()
 {
   ll n;
   int m;
   cin >> n >> m;
-  vector<int> x(m), a(m);
-  int ans = 0;
-  rep(i, m)
+  vector<P> stones(m);
+  rep(i, m) cin >> stones[i].first;
+  rep(i, m) cin >> stones[i].second;
+  sort(stones.begin(), stones.end());
+  stones.emplace_back(n + 1, 1);
+  ll ans = 0;
+
+  int px = 0;
+  ll num = 1;
+  for (auto [x, a] : stones)
   {
-    cin >> x[i];
-  }
-  vector<int> b(m, 0);
-  rep(i, m)
-  {
-    b[i] = b[i - 1] + x[i];
-  }
-  rep(i, m) cin >> a[i];
-  if (x[1] != 0)
-  {
-    cout << -1 << endl;
-    return 0;
-  }
-  rep(i, m - 1)
-  {
-    for (int j = 0; j < b[i + 1] - b[i]; j++)
-    {
-      ans++;
-      a[i]--;
-    }
-    if (a[i] > 0)
-    {
-      a[i + 1] += a[i];
-    }
-    if (a[i] < 0)
+    ll L = x - px;
+    ll carry = num - L;
+    ans += (L - 1) * L / 2;
+    ans += L * carry;
+
+    if (carry < 0)
     {
       cout << -1 << endl;
       return 0;
     }
+    px = x;
+    num = carry + a;
   }
-  cout << ans << endl;
-  return 0;
+  if (num != 1)
+    cout << -1 << endl;
+  else
+    cout << ans << endl;
 }
