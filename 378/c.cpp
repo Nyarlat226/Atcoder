@@ -7,15 +7,15 @@ int main()
 {
   int n;
   cin >> n;
-  int cnt = 0;
-  for (int i = 1; i <= n; i++)
+  map<int, int> c;
+  rep(i, n)
   {
-    string j = to_string(i);
-    if (j.size() % 2 != 0)
-    {
-      cnt++;
-    }
+    int a;
+    cin >> a;
+    int p = c[a];
+    if (p == 0)
+      p = -1;
+    cout << p << ' ';
+    c[a] = i + 1;
   }
-  cout << cnt << endl;
-  return 0;
 }
